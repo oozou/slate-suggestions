@@ -26,3 +26,28 @@ blockquote {
 :not(ul) > li {
   background: red;
 }
+
+.suggestion-portal {
+  display: none;
+  position: absolute;
+  z-index: 10000;
+  margin: 0 !important;
+  width: 200px;
+}
+
+.suggestion-portal ul {
+  list-style-type: none;
+  margin-top: 22px;
+  position: relative;
+  padding-left: 0;
+  margin-left: -8px;
+  background-color: #fff;
+}
+
+.suggestion-portal li {
+  padding: 5px 10px;
+}
+
+.suggestion-portal li.selected {
+  background-color: #eee;
+}

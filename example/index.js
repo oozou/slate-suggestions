@@ -1,25 +1,57 @@
 
-import createSuggestionsPlugin from '..'
+import SuggestionsPlugin from '..'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import initialState from './state.json'
 import { Editor, Raw } from 'slate'
 
-const suggestionsPlugin = createSuggestionsPlugin({
-  trigger: ')'
-});
-const { Suggestions } = suggestionsPlugin;
-const plugins = [suggestionsPlugin];
+const suggestions = [
+  {
+    key: 'table',
+    value: 'table',
+    suggestion: '/table' // Can be either string or react component
+  },
+  {
+    key: 'image',
+    value: 'image',
+    suggestion: '/image'
+  },
+  {
+    key: 'ul',
+    value: 'ul',
+    suggestion: '/list-bullets'
+  },
+  {
+    key: 'ol',
+    value: 'ol',
+    suggestion: '/list-numbers'
+  },
+]
 
 class Example extends React.Component {
 
-  // plugins = [
-  //   Suggestions({
-  //     trigger: ')',
-  //     before: /(\(c)$/i,
-  //     transform: transform => transform.insertText('©')
-  //   })
-  // ];
+  constructor() {
+    super()
+
+    const suggestionsPlugin = new SuggestionsPlugin({
+      trigger: /^\/([^\s]*)$/,
+      suggestions,
+      onEnter: (suggestion) => {
+        const { state } = this.state
+
+        return state
+          .transform()
+          .insertText(`${suggestion.value} `)
+          .apply()
+      }
+    })
+
+    this.SuggestionPortal = suggestionsPlugin.SuggestionPortal
+
+    this.plugins = [
+      suggestionsPlugin
+    ];
+  }
 
   state = {
     state: Raw.deserialize(initialState, { terse: true })
@@ -27,12 +59,6 @@ class Example extends React.Component {
 
   onChange = (state) => {
     this.setState({ state })
-  }
-
-  onSearchChange = ({ value }) => {
-    this.setState({
-      suggestions: defaultSuggestionsFilter(value, mentions),
-    })
   }
 
   render = () => {
@@ -43,11 +69,12 @@ class Example extends React.Component {
           plugins={this.plugins}
           state={this.state.state}
         />
-        <SuggestionsPortal/>
+        <this.SuggestionPortal
+          state={this.state.state}
+        />
       </div>
     )
   }
-
 }
 
 const example = <Example />
