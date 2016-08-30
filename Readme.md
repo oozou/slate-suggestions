@@ -40,6 +40,7 @@ const suggestionsPlugin = SuggestionsPlugin({
   }
 })
 
+// Extract portal component from the plugin
 const { SuggestionPortal } = suggestionPlugin
 
 // Add the plugin to your set of plugins...
@@ -52,6 +53,7 @@ const plugins = [
   ...
   plugins={plugins}
 />
+// And add portal component together with the editor
 <SuggestionPortal
   state={this.state.state}
 />
