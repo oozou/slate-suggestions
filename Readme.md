@@ -18,14 +18,33 @@ _You will need to have installed `slate` as a dependency already._
 ### Usage
 
 ```js
-import AutoReplace from 'slate-suggestions'
+import SuggestionsPlugin from 'slate-suggestions'
 import { Editor } from 'slate'
+
+const suggestions = [ 
+  {
+    key: 'jon-snow',
+    value: '@Jon Snow',
+    suggestion: '@Jon Snow'
+  },
+  // Some other suggestions
+]
+
+const suggestionsPlugin = SuggestionsPlugin({
+  trigger: '@',
+  capture: '/@([\w]*)/,
+  suggestions,
+  onEnter: (suggestion) => {
+    // Modify your state up to your use-cases
+    return modifiedState
+  }
+})
+
+const { SuggestionPortal } = suggestionPlugin
 
 // Add the plugin to your set of plugins...
 const plugins = [
-  Suggestions({
-    trigger: ':'
-  })
+  suggestionPlugin
 ]
 
 // And later pass it into the Slate editor...
@@ -33,15 +52,17 @@ const plugins = [
   ...
   plugins={plugins}
 />
+<SuggestionPortal
+  state={this.state.state}
+/>
 ```
 
 Option | Type | Description
 --- | --- | ---
-**`trigger`** | `String` `RegExp` | The trigger to match the inputed character against—either a character like `a` or a key name like `enter` or `tab`.
-**`after`** | `RegExp` | An optional regexp that must match the text after the trigger for the replacement to occur. Any capturing groups in the regexp will be deleted from the text content.
-**`before`** | `RegExp` | An optional regexp that must match the text before the trigger for the replacement to occur. Any capturing groups in the regexp will be deleted from the text content.
-**`ignoreIn`** | `Function` `Array` `String` | An optional block matcher to ignore triggers inside. If passed an array or string it will match by `node.type`.
-**`onlyIn`** | `Function` `Array` `String` | An optional block matcher to only replace triggers inside. If passed an array or string it will match by `node.type`.
+**`trigger`** | `String` | The trigger to match the inputed character, use to open the portal.
+**`capture`** | `RegExp` | An optional regexp that must match the text after the trigger to keep the portal open and extract the text to filter suggestions.
+**`suggestions`** | `Array` | An array of suggestions object which have the following keys `key`, `value` and `suggestions`.
+**`onEnter`** | `Function` | A function use to handle return/enter keypress to append suggestion into editor. 
 
 ---
 
