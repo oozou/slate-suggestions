@@ -5,26 +5,37 @@ import ReactDOM from 'react-dom'
 import initialState from './state.json'
 import { Editor, Raw } from 'slate'
 
+const getCurrentWord = (text, index, initialIndex) => {
+  if (index === initialIndex)
+    return { start: getCurrentWord(text, index-1, initialIndex), end: getCurrentWord(text, index+1, initialIndex) }
+  if (text[index] === " " || text[index] === "@" || text[index] === undefined)
+    return index
+  if (index < initialIndex)
+    return getCurrentWord(text, index-1, initialIndex)
+  if (index > initialIndex)
+    return getCurrentWord(text, index+1, initialIndex)
+}
+
 const suggestions = [
   {
-    key: 'table',
-    value: 'table',
-    suggestion: '/table' // Can be either string or react component
+    key: 'Jon Snow',
+    value: '@Jon Snow',
+    suggestion: '@Jon Snow' // Can be either string or react component
   },
   {
-    key: 'image',
-    value: 'image',
-    suggestion: '/image'
+    key: 'Daenerys Targaryen',
+    value: '@Daenerys Targaryen',
+    suggestion: '@Daenerys Targaryen'
   },
   {
-    key: 'ul',
-    value: 'ul',
-    suggestion: '/list-bullets'
+    key: 'Cersei Lannister',
+    value: '@Cersei Lannister',
+    suggestion: '@Cersei Lannister'
   },
   {
-    key: 'ol',
-    value: 'ol',
-    suggestion: '/list-numbers'
+    key: 'Tyrion Lannister',
+    value: '@Tyrion Lannister',
+    suggestion: '@Tyrion Lannister'
   },
 ]
 
@@ -33,23 +44,33 @@ class Example extends React.Component {
   constructor() {
     super()
 
-    const suggestionsPlugin = new SuggestionsPlugin({
-      trigger: /^\/([^\s]*)$/,
+    this.suggestionsPlugin = new SuggestionsPlugin({
+      trigger: '@',
+      capture: /@([\w]*)/,
       suggestions,
       onEnter: (suggestion) => {
         const { state } = this.state
 
+        const { anchorText, anchorOffset } = state
+
+        const text = anchorText.text
+
+        let index = { start: anchorOffset-1, end: anchorOffset }
+        if (text[anchorOffset-1] !== '@')
+          index = getCurrentWord(text, anchorOffset-1, anchorOffset-1)
+
+        const newText = text.substring(0, index.start) + `${suggestion.value} ` + text.substring(index.end)
+
         return state
           .transform()
-          .insertText(`${suggestion.value} `)
+          .deleteBackward(anchorOffset)
+          .insertText(newText)
           .apply()
       }
     })
 
-    this.SuggestionPortal = suggestionsPlugin.SuggestionPortal
-
     this.plugins = [
-      suggestionsPlugin
+      this.suggestionsPlugin
     ];
   }
 
@@ -62,6 +83,7 @@ class Example extends React.Component {
   }
 
   render = () => {
+    const { SuggestionPortal } = this.suggestionsPlugin
     return (
       <div>
         <Editor
@@ -69,7 +91,7 @@ class Example extends React.Component {
           plugins={this.plugins}
           state={this.state.state}
         />
-        <this.SuggestionPortal
+        <SuggestionPortal
           state={this.state.state}
         />
       </div>
