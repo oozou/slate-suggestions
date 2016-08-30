@@ -19,7 +19,7 @@
     "watch:example": "watchify ./example/index.js --debug --transform babelify --outfile ./example/build.js"
   },
   "dependencies": {
-    "type-of": "^2.0.1",
+    "react": "^15.3.1",
     "react-portal": "^2.2.0",
     "selection-position": "^1.0.0"
   },
