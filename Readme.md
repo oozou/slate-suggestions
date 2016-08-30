@@ -32,7 +32,7 @@ const suggestions = [
 
 const suggestionsPlugin = SuggestionsPlugin({
   trigger: '@',
-  capture: '/@([\w]*)/,
+  capture: /@([\w]*)/,
   suggestions,
   onEnter: (suggestion) => {
     // Modify your state up to your use-cases
