@@ -48,6 +48,7 @@ class Example extends React.Component {
       trigger: '@',
       capture: /@([\w]*)/,
       suggestions,
+      startOfParagraph: true,
       onEnter: (suggestion) => {
         const { state } = this.state
 
