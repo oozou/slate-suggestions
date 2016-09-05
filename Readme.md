@@ -62,10 +62,11 @@ const plugins = [
 Option | Type | Description
 --- | --- | ---
 **`trigger`** | `String` | The trigger to match the inputed character, use to open the portal.
-**`capture`** | `RegExp` | An optional regexp that must match the text after the trigger to keep the portal open and extract the text to filter suggestions.
+**`capture`** | `RegExp` | A regexp that must match the text after the trigger to keep the portal open and extract the text to filter suggestions.
 **`suggestions`** | `Array` | An array of suggestions object which have the following keys `key`, `value` and `suggestions`.
 **`onEnter`** | `Function` | A function use to handle return/enter keypress to append suggestion into editor.
-**`startOfParagraph`** | `Bool` | A flag that use to check that portal will trigger only when trigger string is at the start of paragraph. 
+**`startOfParagraph`** | `Bool` | An optional flag that use to check that portal will trigger only when trigger string is at the start of paragraph.
+**`resultSize`** | `Number` | An optional number use to set size of suggestion result. Default is 5.
 
 ---
 
