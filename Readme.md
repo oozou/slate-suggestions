@@ -3,6 +3,8 @@
 
 A [**Slate**](https://github.com/ianstormtaylor/slate) plugin to suggestion replacements or actions based on input. Useful for implementing "mention" or other suggestion based behaviors.
 
+![](./example/demo.gif)
+
 ---
 
 ### Install
