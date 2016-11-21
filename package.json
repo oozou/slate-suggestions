@@ -21,10 +21,11 @@
   "dependencies": {
     "react": "^15.3.1",
     "react-portal": "^2.2.0",
-    "selection-position": "^1.0.0"
+    "selection-position": "^1.0.0",
+    "slate": "^0.15.5"
   },
   "peerDependencies": {
-    "slate": "*"
+    "slate": "^0.15.5"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
