@@ -21,11 +21,10 @@
   "dependencies": {
     "react": "^15.3.1",
     "react-portal": "^2.2.0",
-    "selection-position": "^1.0.0",
-    "slate": "^0.15.5"
+    "selection-position": "^1.0.0"
   },
   "peerDependencies": {
-    "slate": "^0.15.5"
+    "slate": "^0.15.8"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
@@ -43,7 +42,7 @@
     "npm-run-all": "^2.3.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
-    "slate": "^0.12.0",
+    "slate": "^0.15.8",
     "watchify": "^3.7.0"
   },
   "keywords": [
