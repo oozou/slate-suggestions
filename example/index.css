@@ -31,13 +31,13 @@ blockquote {
   display: none;
   position: absolute;
   z-index: 10000;
-  margin: 0 !important;
+  margin-top: 30px;
   width: 200px;
 }
 
 .suggestion-portal ul {
   list-style-type: none;
-  margin-top: 22px;
+  margin-top: 0;
   position: relative;
   padding-left: 0;
   margin-left: -8px;
