@@ -5,15 +5,19 @@ import ReactDOM from 'react-dom'
 import initialState from './state.json'
 import { Editor, Raw } from 'slate'
 
-const getCurrentWord = (text, index, initialIndex) => {
-  if (index === initialIndex)
-    return { start: getCurrentWord(text, index-1, initialIndex), end: getCurrentWord(text, index+1, initialIndex) }
-  if (text[index] === " " || text[index] === "@" || text[index] === undefined)
+function getCurrentWord(text, index, initialIndex) {
+  if (index === initialIndex) {
+    return { start: getCurrentWord(text, index - 1, initialIndex), end: getCurrentWord(text, index + 1, initialIndex) }
+  }
+  if (text[index] === " " || text[index] === "@" || text[index] === undefined) {
     return index
-  if (index < initialIndex)
-    return getCurrentWord(text, index-1, initialIndex)
-  if (index > initialIndex)
-    return getCurrentWord(text, index+1, initialIndex)
+  }
+  if (index < initialIndex) {
+    return getCurrentWord(text, index - 1, initialIndex)
+  }
+  if (index > initialIndex) {
+    return getCurrentWord(text, index + 1, initialIndex)
+  }
 }
 
 const suggestions = [
@@ -56,11 +60,13 @@ class Example extends React.Component {
 
         const text = anchorText.text
 
-        let index = { start: anchorOffset-1, end: anchorOffset }
-        if (text[anchorOffset-1] !== '@')
-          index = getCurrentWord(text, anchorOffset-1, anchorOffset-1)
+        let index = { start: anchorOffset - 1, end: anchorOffset }
 
-        const newText = text.substring(0, index.start) + `${suggestion.value} ` + text.substring(index.end)
+        if (text[anchorOffset - 1] !== '@') {
+          index = getCurrentWord(text, anchorOffset - 1, anchorOffset - 1)
+        }
+
+        const newText = `${text.substring(0, index.start)}${suggestion.value} ${text.substring(index.end)}`
 
         return state
           .transform()
@@ -72,7 +78,7 @@ class Example extends React.Component {
 
     this.plugins = [
       this.suggestionsPlugin
-    ];
+    ]
   }
 
   state = {
