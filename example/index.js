@@ -23,22 +23,22 @@ function getCurrentWord(text, index, initialIndex) {
 const suggestions = [
   {
     key: 'Jon Snow',
-    value: '@Jon Snow',
+    value: 'Jon Snow',
     suggestion: '@Jon Snow' // Can be either string or react component
   },
   {
     key: 'Daenerys Targaryen',
-    value: '@Daenerys Targaryen',
+    value: 'Daenerys Targaryen',
     suggestion: '@Daenerys Targaryen'
   },
   {
     key: 'Cersei Lannister',
-    value: '@Cersei Lannister',
+    value: 'Cersei Lannister',
     suggestion: '@Cersei Lannister'
   },
   {
     key: 'Tyrion Lannister',
-    value: '@Tyrion Lannister',
+    value: 'Tyrion Lannister',
     suggestion: '@Tyrion Lannister'
   },
 ]
@@ -52,26 +52,12 @@ class Example extends React.Component {
       trigger: '@',
       capture: /@([\w]*)/,
       suggestions,
-      startOfParagraph: true,
       onEnter: (suggestion) => {
         const { state } = this.state
 
-        const { anchorText, anchorOffset } = state
-
-        const text = anchorText.text
-
-        let index = { start: anchorOffset - 1, end: anchorOffset }
-
-        if (text[anchorOffset - 1] !== '@') {
-          index = getCurrentWord(text, anchorOffset - 1, anchorOffset - 1)
-        }
-
-        const newText = `${text.substring(0, index.start)}${suggestion.value} ${text.substring(index.end)}`
-
         return state
           .transform()
-          .deleteBackward(anchorOffset)
-          .insertText(newText)
+          .insertText(suggestion.value)
           .apply()
       }
     })
