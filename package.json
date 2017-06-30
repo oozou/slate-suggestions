@@ -1,7 +1,7 @@
 {
   "name": "slate-suggestions",
   "description": "A Slate plugin to display suggestions.",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "license": "MIT",
   "repository": "git://github.com/oozou/slate-suggestions.git",
   "main": "./dist/index.js",
