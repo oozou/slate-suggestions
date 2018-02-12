@@ -4,21 +4,23 @@ import ReactDOM from 'react-dom'
 import initialState from './state.json'
 import { Editor, Raw } from 'slate'
 
-function getCurrentWord(text, index, initialIndex) {
-  if (index === initialIndex) {
-    return { start: getCurrentWord(text, index - 1, initialIndex), end: getCurrentWord(text, index + 1, initialIndex) }
-  }
-  if (text[index] === " " || text[index] === "@" || text[index] === undefined) {
-    return index
-  }
-  if (index < initialIndex) {
-    return getCurrentWord(text, index - 1, initialIndex)
-  }
-  if (index > initialIndex) {
-    return getCurrentWord(text, index + 1, initialIndex)
-  }
+function getCurrentWord(text, index, initialIndex, initialChar) {
+    if (index === initialIndex) {
+        return {
+            start: getCurrentWord(text, index - 1, initialIndex, initialChar),
+            end: getCurrentWord(text, index + 1, initialIndex, initialChar)
+        }
+    }
+    if (text[index] === initialChar || text[index] === undefined) {
+        return index
+    }
+    if (index < initialIndex) {
+        return getCurrentWord(text, index - 1, initialIndex, initialChar)
+    }
+    if (index > initialIndex) {
+        return getCurrentWord(text, index + 1, initialIndex, initialChar)
+    }
 }
-
 const suggestions = [
   {
     key: 'Jon Snow',
@@ -47,23 +49,27 @@ class Example extends React.Component {
   constructor() {
     super()
 
+    const trigger = '@'
+    const captureString = trigger + '(.*)'
+    const capture = new RegExp(captureString);
+    console.log(capture)
     this.suggestionsPlugin = new SuggestionsPlugin({
-      trigger: '@',
-      capture: /@([\w]*)/,
+      trigger: trigger,
+      capture: capture,
       suggestions,
       onEnter: (suggestion) => {
         const { state } = this.state
 
         const { anchorText, anchorOffset } = state
-
         const text = anchorText.text
-
         let index = { start: anchorOffset - 1, end: anchorOffset }
 
-        if (text[anchorOffset - 1] !== '@') {
-          index = getCurrentWord(text, anchorOffset - 1, anchorOffset - 1)
+        // Find indicies of beginning/end of word
+        if (text[anchorOffset - 1] !== trigger) {
+          index = getCurrentWord(text, anchorOffset - 1, anchorOffset - 1, trigger)
         }
 
+        // Define replacement value
         const newText = `${text.substring(0, index.start)}${suggestion.value} `
 
         return state
