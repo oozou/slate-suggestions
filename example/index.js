@@ -1,8 +1,10 @@
-import SuggestionsPlugin from '..'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Value } from 'slate'
+import { Editor } from 'slate-react';
+
+import SuggestionsPlugin from '../lib'
 import initialState from './state.json'
-import { Editor, Raw } from 'slate'
 
 function getCurrentWord(text, index, initialIndex) {
   if (index === initialIndex) {
@@ -26,6 +28,11 @@ const suggestions = [
     suggestion: '@Jon Snow' // Can be either string or react component
   },
   {
+    key: 'John Evans',
+    value: '@John Evans',
+    suggestion: '@John Evans'
+  },
+  {
     key: 'Daenerys Targaryen',
     value: '@Daenerys Targaryen',
     suggestion: '@Daenerys Targaryen'
@@ -47,14 +54,12 @@ class Example extends React.Component {
   constructor() {
     super()
 
-    this.suggestionsPlugin = new SuggestionsPlugin({
+    this.suggestionsPlugin = SuggestionsPlugin({
       trigger: '@',
       capture: /@([\w]*)/,
       suggestions,
-      onEnter: (suggestion) => {
-        const { state } = this.state
-
-        const { anchorText, anchorOffset } = state
+      onEnter: (suggestion, change) => {
+        const { anchorText, anchorOffset } = this.state.value
 
         const text = anchorText.text
 
@@ -66,38 +71,38 @@ class Example extends React.Component {
 
         const newText = `${text.substring(0, index.start)}${suggestion.value} `
 
-        return state
-          .transform()
+        change
           .deleteBackward(anchorOffset)
           .insertText(newText)
-          .apply()
+        
+        return true;
       }
     })
 
     this.plugins = [
       this.suggestionsPlugin
     ]
+
+    this.state = {
+      value: Value.fromJSON(initialState)
+    };
   }
 
-  state = {
-    state: Raw.deserialize(initialState, { terse: true })
-  };
-
-  onChange = (state) => {
-    this.setState({ state })
+  onChange = ({ value }) => {
+    this.setState({ value })
   }
 
-  render = () => {
+  render() {
     const { SuggestionPortal } = this.suggestionsPlugin
     return (
       <div>
         <Editor
           onChange={this.onChange}
           plugins={this.plugins}
-          state={this.state.state}
+          value={this.state.value}
         />
         <SuggestionPortal
-          state={this.state.state}
+          value={this.state.value}
         />
       </div>
     )
@@ -107,3 +112,5 @@ class Example extends React.Component {
 const example = <Example />
 const root = document.body.querySelector('main')
 ReactDOM.render(example, root)
+
+module.hot.accept()
