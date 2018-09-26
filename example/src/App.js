@@ -3,7 +3,7 @@ import { Value } from 'slate'
 import { Editor } from 'slate-react'
 import initialState from './state.json'
 import './App.css';
-import SuggestionsPlugin from "slate-suggestions-tmp"
+import SuggestionsPlugin from "slate-suggestions"
 
 function getCurrentWord(text, index, initialIndex) {
   if (index === initialIndex) {

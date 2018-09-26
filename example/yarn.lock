@@ -6167,7 +6167,7 @@ slate-react@^0.18.9:
     slate-plain-serializer "^0.6.6"
     slate-prop-types "^0.4.65"
 
-"slate-suggestions-tmp@link:..":
+"slate-suggestions@link:..":
   version "0.0.0"
   uid ""
 

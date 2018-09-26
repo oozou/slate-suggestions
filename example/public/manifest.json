@@ -1,6 +1,6 @@
 {
-  "short_name": "slate-suggestions-tmp",
-  "name": "slate-suggestions-tmp",
+  "short_name": "slate-suggestions",
+  "name": "slate-suggestions",
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#000000",

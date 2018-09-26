@@ -1,6 +1,6 @@
 {
-  "name": "slate-suggestions-tmp-example",
-  "homepage": "https://rcarubbi.github.io/slate-suggestions-tmp",
+  "name": "slate-suggestions-example",
+  "homepage": "https://rcarubbi.github.io/slate-suggestions",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -13,7 +13,7 @@
     "react-scripts": "1.1.5",
     "slate": "^0.41.1",
     "slate-react": "^0.18.9",
-    "slate-suggestions-tmp": "link:.."
+    "slate-suggestions": "link:.."
   },
   "scripts": {
     "start": "react-scripts start",
