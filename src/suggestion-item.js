@@ -1,15 +1,15 @@
 import React from 'react'
 
 class SuggestionItem extends React.Component {
-
-  onClick = (e) => {
+   onClick = (e) => {
+ 
     this.props.closePortal()
 
     const { editor, suggestion, appendSuggestion } = this.props
+    const change =  editor.value.change();
+    appendSuggestion(suggestion, change)
 
-    const state = appendSuggestion(suggestion)
-
-    editor.onChange(state)
+    editor.onChange(change)
   }
 
   onMouseEnter = () =>
