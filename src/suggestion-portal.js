@@ -124,22 +124,7 @@ class SuggestionPortal extends React.Component {
       }
     }
   }
-
-  matchTrigger = () => {
-    const { value, trigger } = this.props
-
-    const selectionCondition = value.selection.isFocused && !value.selection.isExpanded
-
-    if (!value.selection.anchor.key) return false
-
-    const { anchorText, selection } = value
-    const { offset } = selection.anchor
-
-    const lastChar = anchorText.text[offset - 1]
-
-    return selectionCondition && lastChar && lastChar === trigger
-  }
-
+ 
   matchCapture = () => {
     const { value, capture } = this.props
 
