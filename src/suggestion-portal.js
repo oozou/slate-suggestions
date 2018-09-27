@@ -59,7 +59,7 @@ class SuggestionPortal extends React.Component {
 
   onKeyUp = (e, change) => {
     const match = this.matchCapture();
-    if (this.matchTrigger() || match) {
+    if (match) {
       if (e.keyCode !== DOWN_ARROW_KEY &&
         e.keyCode !== UP_ARROW_KEY &&
         e.keyCode !== ENTER_KEY) {
@@ -84,41 +84,44 @@ class SuggestionPortal extends React.Component {
 
     const match = this.matchCapture();
 
-    if (this.matchTrigger() || match) {
+    if (match) {
 
       const { filteredSuggestions } = this.state
+      if (filteredSuggestions.length > 0) {
+        // Prevent default return/enter key press when portal is open
+        if (e.keyCode === ENTER_KEY) {
+          e.preventDefault();
+          this.closePortal()
+          this.selectedIndex = (this.selectedIndex || 0)
+          this.setCallbackSuggestion();
+          
+          // Handle enter
+          if (this.props.callback.onEnter && this.props.callback.suggestion !== undefined) {
+            this.props.callback.onEnter(this.props.callback.suggestion, change)
 
-      // Prevent default return/enter key press when portal is open
-      if (e.keyCode === ENTER_KEY) {
-        e.preventDefault();
-        this.closePortal()
-
-        // Handle enter
-        if (this.props.callback.onEnter && this.props.callback.suggestion !== undefined) {
-          this.props.callback.onEnter(this.props.callback.suggestion, change)
-
+            return false;
+          }
+        }
+        else if (e.keyCode === DOWN_ARROW_KEY) {
+          e.preventDefault();
+          if (this.selectedIndex + 1 === filteredSuggestions.length) {
+            this.selectedIndex = -1
+          }
+          this.selectedIndex = (this.selectedIndex || 0) + 1
+          this.setCallbackSuggestion()
+          this.forceUpdate()
+          return false;
+        } else if (e.keyCode === UP_ARROW_KEY) {
+          e.preventDefault();
+          if (this.selectedIndex === 0) {
+            this.selectedIndex = filteredSuggestions.length
+          }
+          this.selectedIndex = (this.selectedIndex || filteredSuggestions.length) - 1
+          this.setCallbackSuggestion()
+          this.forceUpdate()
           return false;
         }
       }
-      else if (e.keyCode === DOWN_ARROW_KEY) {
-        e.preventDefault();
-        if (this.selectedIndex + 1 === filteredSuggestions.length) {
-          this.selectedIndex = -1
-        }
-        this.selectedIndex = (this.selectedIndex || 0) + 1
-        this.setCallbackSuggestion()
-        this.forceUpdate()
-        return false;
-      } else if (e.keyCode === UP_ARROW_KEY) {
-        e.preventDefault();
-        if (this.selectedIndex === 0) {
-          this.selectedIndex = filteredSuggestions.length
-        }
-        this.selectedIndex = (this.selectedIndex || filteredSuggestions.length) - 1
-        this.setCallbackSuggestion()
-        this.forceUpdate()
-        return false;
-      }  
     }
   }
 
@@ -156,7 +159,7 @@ class SuggestionPortal extends React.Component {
     const matchArr = text.match(trigger)
 
     if (matchArr) {
-      return matchArr[1].toLowerCase()
+      return matchArr[0].toLowerCase()
     }
 
     return undefined
@@ -172,7 +175,8 @@ class SuggestionPortal extends React.Component {
 
     const currentWord = getCurrentWord(anchorText.text, offset - 1, offset - 1)
 
-    const matchText = this.getMatchText(currentWord, capture)
+    let matchText = this.getMatchText(currentWord, capture);
+    matchText = matchText.slice(1, matchText.length);
 
     if (typeof suggestions === 'function') {
       return suggestions(matchText)
@@ -191,7 +195,7 @@ class SuggestionPortal extends React.Component {
 
     const match = this.matchCapture();
 
-    if (this.matchTrigger() || match) {
+    if (match) {
       const rect = position()
       if (rect) {
         this.portalContainer.current.style.display = 'block'
@@ -212,7 +216,7 @@ class SuggestionPortal extends React.Component {
 
     const match = this.matchCapture();
 
-    if (!this.matchTrigger() && !match) {
+    if (!match) {
       this.portalContainer.current.removeAttribute('style')
       return
     }

@@ -49,7 +49,7 @@ class App extends Component {
     super(props)
     this.suggestionsPlugin = new SuggestionsPlugin({
       trigger: '@',
-      capture: /@([^\s]+)/,
+      capture: /(^|\W)@([^\s]+)?/,
       suggestions,
       onEnter: (suggestion, change) => {
 
