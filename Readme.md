@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save slate-suggestions
+npm install --save slate-smart-suggestions
 ```
 
 ## Usage
