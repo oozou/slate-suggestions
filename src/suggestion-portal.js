@@ -227,7 +227,7 @@ class SuggestionPortal extends React.Component {
     const { filteredSuggestions } = this.state
 
     return (
-      <Portal isOpened  >
+      <Portal isOpened node={document && document.getElementById('root')}  >
         <div className="suggestion-portal" ref={this.portalContainer}>
           <ul>
             {filteredSuggestions.map((suggestion, index) =>
