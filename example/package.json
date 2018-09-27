@@ -1,0 +1,24 @@
+{
+  "name": "slate-suggestions-example",
+  "homepage": "https://rcarubbi.github.io/slate-suggestions",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "immutable": "^3.8.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-portal": "^4.1.5",
+    "react-scripts": "1.1.5",
+    "slate": "^0.41.1",
+    "slate-react": "^0.18.9",
+    "slate-suggestions": "link:.."
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
